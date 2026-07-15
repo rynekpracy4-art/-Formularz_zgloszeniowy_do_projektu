@@ -493,6 +493,12 @@
     form.elements.opis_szczegolnych_potrzeb.required = false;
     message.textContent = '';
     message.className = '';
+    declarationsRead = false;
+    declarationCheckbox.disabled = true;
+    declarationConfirm.classList.add('is-locked');
+    declarationsDetails.open = false;
+    declarationConfirm.querySelector('small').textContent = 'Najpierw rozwiń i zapoznaj się z pełną treścią powyżej.';
+    updateDeclarationName();
     form.elements.obywatelstwo.value = 'polskie';
     form.elements.wojewodztwo.value = 'śląskie';
     form.elements.data_podpisu.value = new Date().toISOString().slice(0,10);
@@ -591,12 +597,8 @@
   });
   completionDialog.addEventListener('cancel', event => event.preventDefault());
 
-  clearBtn.addEventListener('click',()=>{
-    if(confirm('Wyczyścić wszystkie wpisane dane?')) {
-      form.reset(); needsDetails.classList.add('hidden'); message.textContent=''; declarationsRead=false; declarationCheckbox.disabled=true; declarationConfirm.classList.add('is-locked'); declarationsDetails.open=false; declarationConfirm.querySelector('small').textContent='Najpierw rozwiń i zapoznaj się z pełną treścią powyżej.'; updateDeclarationName();
-      form.elements.obywatelstwo.value='polskie'; form.elements.wojewodztwo.value='śląskie';
-      form.elements.data_podpisu.value=new Date().toISOString().slice(0,10);
-    }
+  clearBtn.addEventListener('click', async () => {
+    if (confirm('Wyczyścić wszystkie wpisane dane?')) await clearApplicationData();
   });
   form.elements.data_podpisu.value=new Date().toISOString().slice(0,10);
 })();
